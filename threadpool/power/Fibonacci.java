@@ -1,7 +1,7 @@
 import java.util.concurrent.Callable;
 
 public class Fibonacci implements Callable<Integer> {
-	
+
 	private int n;
 
 	public Fibonacci(int n) {
