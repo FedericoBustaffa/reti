@@ -1,4 +1,3 @@
-package PiCalculator;
 
 public class PiCalculatorMain {
 
