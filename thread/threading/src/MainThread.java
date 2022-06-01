@@ -1,22 +1,29 @@
+
 public class MainThread {
     public static void main(String[] args) {
+        // Interface
         RunnableInterface runnableInterface = new RunnableInterface();
         Thread t1 = new Thread(runnableInterface);
+
+        // extension
         ThreadExtension t2 = new ThreadExtension();
+
+        // daemon
         DaemonThread daemonThread = new DaemonThread();
         Thread t3 = new Thread(daemonThread);
 
-        t3.setDaemon(true);
-        t3.start();
         t1.setPriority(Thread.MAX_PRIORITY);
-        t1.start();
-        t1.interrupt();
+        t3.setDaemon(true);
 
+        t1.start();
+        t2.start();
+        t3.start();
+
+        // interrupt t1
+        t1.interrupt();
         if (t1.isInterrupted()) {
             System.out.println("RunnableInterface interrupted");
         }
-
-        t2.start();
 
         try {
             t1.join();
@@ -25,8 +32,9 @@ public class MainThread {
             System.out.println("Interrupted Exception occurred");
         }
 
+        // t1 settings
         System.out.printf(
-                "T1\nID: %d\nName: %s\nPriority: %d\nStatus: %s\n",
+                "T1 settings\nID: %d\nName: %s\nPriority: %d\nStatus: %s\n",
                 t1.getId(),
                 t1.getName(),
                 t1.getPriority(),
