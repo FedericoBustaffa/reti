@@ -1,9 +1,9 @@
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.SynchronousQueue;
 
 public class Main {
     public static void main(String[] args) {
-        BlockingQueue<Integer> queue = new ArrayBlockingQueue<Integer>(2);
+        BlockingQueue<Integer> queue = new SynchronousQueue<Integer>();
         Consumer consumer = new Consumer(10, queue);
         Producer producer = new Producer(10, queue);
 

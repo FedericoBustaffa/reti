@@ -15,7 +15,7 @@ public class Producer implements Runnable {
 				queue.put(i);
 				System.out.println(i + " inserted");
 			} catch (InterruptedException e) {
-				System.out.println("Producer interrupted");
+				System.out.println("Can't add " + i + ": full queue");
 			}
 		}
 	}
