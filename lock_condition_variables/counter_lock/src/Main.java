@@ -3,26 +3,26 @@ import java.util.concurrent.Executors;
 
 public class Main {
 	public static void main(String[] args) {
-		
+
 		LockCounter counter = new LockCounter();
 		ReadWriteLockCounter rwcounter = new ReadWriteLockCounter();
 
 		long start = System.currentTimeMillis();
 		ExecutorService executor1 = Executors.newCachedThreadPool();
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 100; i++) {
 			executor1.execute(new Writer(counter));
 			executor1.execute(new Reader(counter));
 		}
 		executor1.shutdown();
 		while (!executor1.isTerminated())
 			;
-		
+
 		long end = System.currentTimeMillis();
 		long time1 = end - start;
-		
+
 		start = System.currentTimeMillis();
 		ExecutorService executor2 = Executors.newCachedThreadPool();
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 100; i++) {
 			executor2.execute(new Writer(rwcounter));
 			executor2.execute(new Reader(rwcounter));
 		}
