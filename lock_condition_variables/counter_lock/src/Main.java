@@ -1,40 +1,51 @@
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class Main {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 
+		Thread[] readers = new Thread[1000];
+		Thread[] writers = new Thread[1000];
+
+		// Lock Counter
 		LockCounter counter = new LockCounter();
-		ReadWriteLockCounter rwcounter = new ReadWriteLockCounter();
 
 		long start = System.currentTimeMillis();
-		ExecutorService executor1 = Executors.newCachedThreadPool();
-		for (int i = 0; i < 100; i++) {
-			executor1.execute(new Writer(counter));
-			executor1.execute(new Reader(counter));
+		for (int i = 0; i < 1000; i++) {
+			readers[i] = new Thread(new Reader(counter));
+			writers[i] = new Thread(new Writer(counter));
+
+			readers[i].start();
+			writers[i].start();
 		}
-		executor1.shutdown();
-		while (!executor1.isTerminated())
-			;
+
+		for (int i = 0; i < 1000; i++) {
+			readers[i].join();
+			writers[i].join();
+		}
 
 		long end = System.currentTimeMillis();
-		long time1 = end - start;
+		long counter_time = end - start;
+
+		// Read Write Lock counter
+		ReadWriteLockCounter rwcounter = new ReadWriteLockCounter();
 
 		start = System.currentTimeMillis();
-		ExecutorService executor2 = Executors.newCachedThreadPool();
-		for (int i = 0; i < 100; i++) {
-			executor2.execute(new Writer(rwcounter));
-			executor2.execute(new Reader(rwcounter));
+		for (int i = 0; i < 1000; i++) {
+			readers[i] = new Thread(new Reader(rwcounter));
+			writers[i] = new Thread(new Writer(rwcounter));
+
+			readers[i].start();
+			writers[i].start();
 		}
-		executor2.shutdown();
-		while (!executor2.isTerminated())
-			;
+
+		for (int i = 0; i < 1000; i++) {
+			readers[i].join();
+			writers[i].join();
+		}
 		end = System.currentTimeMillis();
-		long time2 = end - start;
+		long rwcounter_time = end - start;
 
-		System.out.printf("Time1: %d ms\n", time1);
-		System.out.printf("Time2: %d ms\n", time2);
-
+		System.out.printf("Lock Counter: %d ms\n", counter_time);
+		System.out.printf("ReadWriteLock Counter: %d ms\n", rwcounter_time);
 	}
 
 }

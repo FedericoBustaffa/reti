@@ -1,12 +1,13 @@
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
 public class ReadWriteLockCounter extends LockCounter {
-	
+
 	private ReadWriteLock rwlock = new ReentrantReadWriteLock();
-	private Lock read = rwlock.readLock();
-	private Lock write = rwlock.writeLock();
+	private ReadLock read = (ReadLock) rwlock.readLock();
+	private WriteLock write = (WriteLock) rwlock.writeLock();
 
 	public void increment() {
 		read.lock();
