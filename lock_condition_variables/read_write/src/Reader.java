@@ -1,4 +1,5 @@
 public class Reader implements Runnable {
+
 	private Buffer buffer;
 
 	public Reader(Buffer buffer) {
@@ -6,6 +7,6 @@ public class Reader implements Runnable {
 	}
 
 	public void run() {
-		buffer.size();
+		buffer.sum();
 	}
 }

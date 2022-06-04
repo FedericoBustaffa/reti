@@ -8,7 +8,7 @@ public class Writer implements Runnable {
 
 	public void run() {
 		for (int i = 0; i < 100; i++) {
-			buffer.push();
+			buffer.transfer(i);
 		}
 	}
 }
