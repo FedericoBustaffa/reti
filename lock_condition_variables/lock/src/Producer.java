@@ -1,14 +1,14 @@
 
 public class Producer implements Runnable {
-	private Bufferino b;
+	private Buffer b;
 
-	public Producer(Bufferino b) {
+	public Producer(Buffer b) {
 		this.b = b;
 	}
 
 	public void run() {
 		for (int i = 0; i < 10; i++) {
-			b.push();
+			this.b.push();
 			System.out.println("push");
 		}
 	}

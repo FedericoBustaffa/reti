@@ -1,7 +1,7 @@
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        Bufferino bufferino = new Bufferino();
+        Buffer bufferino = new Buffer();
 
         Consumer consumer = new Consumer(bufferino);
         Producer producer = new Producer(bufferino);
@@ -9,11 +9,14 @@ public class Main {
         Thread c = new Thread(consumer);
         Thread p = new Thread(producer);
 
-        p.start();
+        long time1 = System.currentTimeMillis();
         c.start();
+        p.start();
 
         c.join();
         p.join();
+        long time2 = System.currentTimeMillis();
+        System.out.println("Execution time: " + (double) (time2 - time1) / 1000 + "s");
 
         System.out.println(bufferino.get());
     }
