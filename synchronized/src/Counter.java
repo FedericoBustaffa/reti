@@ -7,28 +7,12 @@ public class Counter {
 		counter = 0;
 	}
 
-	public void decrement() throws InterruptedException {
-		synchronized (this) {
-			while (counter <= 0) {
-				wait();
-			}
-
-			counter--;
-
-			notify();
-		}
+	public void decrement() {
+		counter--;
 	}
 
-	public void increment() throws InterruptedException {
-		synchronized (this) {
-			while (counter >= 20) {
-				wait();
-			}
-
-			counter++;
-
-			notify();
-		}
+	public void increment() {
+		counter++;
 	}
 
 	public int get() {

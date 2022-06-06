@@ -6,16 +6,8 @@ public class Main {
         Counter counter = new Counter();
 
         ExecutorService pool = Executors.newCachedThreadPool();
-        for (int i = 0; i < 100; i++) {
-            pool.execute(new Incrementer(counter));
-        }
-
-        Thread.sleep(1000);
-        System.out.println("Counter: " + counter.get());
-
-        for (int i = 0; i < 100; i++) {
-            pool.execute(new Decrementer(counter));
-        }
+        pool.execute(new Decrementer(counter));
+        pool.execute(new Incrementer(counter));
 
         pool.shutdown();
         while (!pool.isTerminated())

@@ -7,10 +7,21 @@ public class Incrementer implements Runnable {
 	}
 
 	public void run() {
-		try {
-			counter.increment();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		for (int i = 0; i < 100; i++) {
+			try {
+				synchronized (counter) {
+					while (counter.get() >= 20) {
+						counter.wait();
+					}
+
+					counter.increment();
+					System.out.println(counter.get());
+
+					counter.notify();
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
