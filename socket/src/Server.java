@@ -1,18 +1,21 @@
 import java.net.ServerSocket;
-import java.net.Socket;
-import java.io.BufferedReader;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.BindException;
 
 public class Server {
 
+	private String name;
+	private int size;
 	private ServerSocket server_socket;
 	private int port;
-	private Socket connection;
-	private BufferedReader in;
+	private ExecutorService pool;
 
-	public Server() throws NullPointerException {
+	public Server(String name, int size) {
+		this.name = name;
+		this.size = size;
+
 		int p = 1;
 		boolean bounded = false;
 		while (!bounded && p < 5000) {
@@ -29,46 +32,35 @@ public class Server {
 			}
 		}
 
-		if (p == 5000) {
-			throw new NullPointerException();
-		}
+		this.pool = Executors.newCachedThreadPool();
+	}
 
-		connection = null;
+	public String getName() {
+		return name;
+	}
+
+	public int getSize() {
+		return size;
 	}
 
 	public int getPort() {
 		return port;
 	}
 
-	public void accept() {
-		try {
-			connection = server_socket.accept();
-			in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-		} catch (IOException e) {
-			System.out.println("Accept failed");
+	public void start() {
+		for (int i = 0; i < size; i++) {
+			pool.execute(new ClientHandler(server_socket));
 		}
 	}
 
-	public void read() {
-		String msg;
+	public void shutdown() {
+		pool.shutdown();
+		while (!pool.isTerminated())
+			;
 		try {
-			while ((msg = in.readLine()) != null) {
-				System.out.println("Client: " + msg);
-			}
-		} catch (IOException e) {
-			System.out.println("Client has closed the connection");
-		}
-	}
-
-	public void close() {
-		try {
-			in.close();
-			connection.close();
 			server_socket.close();
 		} catch (IOException e) {
-			System.out.println();
-		} catch (NullPointerException e) {
-
+			e.printStackTrace();
 		}
 	}
 }

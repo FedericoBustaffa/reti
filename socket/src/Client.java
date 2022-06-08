@@ -7,30 +7,35 @@ import java.net.Socket;
 
 public class Client {
 
+	private String name;
 	private Socket client;
 	private int port;
 	private BufferedWriter out;
 
-	public Client() throws NullPointerException {
+	public Client(String name) throws NullPointerException {
+		this.name = name;
+
 		boolean bounded = false;
 		int p = 1;
 		while (!bounded && p < 5000) {
 			try {
 				client = new Socket(InetAddress.getLocalHost(), p);
 				port = p;
-				if (client.isBound())
-					System.out.println("bounded");
-
-				if (client.isConnected())
-					System.out.println("connected");
 
 				bounded = true;
 				out = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
+				out.write(name + "\n");
+				out.flush();
 			} catch (ConnectException e) {
 				p++;
 			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public int getPort() {
@@ -41,7 +46,6 @@ public class Client {
 		try {
 			out.write(msg + "\n");
 			out.flush();
-			client.shutdownOutput();
 		} catch (IOException e) {
 			System.out.println("Writing error");
 		}

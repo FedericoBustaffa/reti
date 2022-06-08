@@ -1,18 +1,15 @@
+import java.util.Scanner;
 
 public class ServerMain {
 	public static void main(String[] args) {
-		Server server = null;
-		try {
-			server = new Server();
-		} catch (NullPointerException e) {
-			System.out.println("Server socket error");
-			return;
-		}
-
+		Scanner in = new Scanner(System.in);
+		System.out.print("Server size: ");
+		Server server = new Server("Chat", in.nextInt());
 		System.out.println("Server on port " + server.getPort());
-		server.accept();
-		server.read();
 
-		server.close();
+		server.start();
+		server.shutdown();
+
+		in.close();
 	}
 }
