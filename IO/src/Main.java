@@ -11,7 +11,10 @@ public class Main {
         buffered_rw.read();
 
         DataReadWrite data_rw = new DataReadWrite("text.txt");
-        int l = data_rw.write("Ciao sono Ernesto");
-        data_rw.read(l);
+        int l = data_rw.writeString("Ciao sono Ernesto");
+        data_rw.readString(l);
+
+        data_rw.writeInt(10);
+        data_rw.readInt();
     }
 }
