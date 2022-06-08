@@ -41,6 +41,7 @@ public class Client {
 		try {
 			out.write(msg + "\n");
 			out.flush();
+			client.shutdownOutput();
 		} catch (IOException e) {
 			System.out.println("Writing error");
 		}

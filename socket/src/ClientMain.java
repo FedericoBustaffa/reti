@@ -6,6 +6,7 @@ public class ClientMain {
         System.out.println("Server on port " + client.getPort());
 
         Scanner in = new Scanner(System.in);
+        System.out.print("Write to server: ");
         client.write(in.nextLine());
 
         in.close();
