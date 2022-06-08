@@ -16,5 +16,9 @@ public class Main {
 
         data_rw.writeInt(10);
         data_rw.readInt();
+
+        ReaderWriter reader_writer = new ReaderWriter("text.txt");
+        reader_writer.write("Ciao sono Giancarlo");
+        reader_writer.read();
     }
 }
