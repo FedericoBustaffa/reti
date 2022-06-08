@@ -1,32 +1,17 @@
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 public class Main {
-    public static void main(String[] args) throws Exception {
-        InputStream in = new FileInputStream("file.txt");
-        OutputStream out = new FileOutputStream("copy.txt");
+    public static void main(String[] args) {
 
-        try (BufferedInputStream buf_in = new BufferedInputStream(in);
-                OutputStream buf_out = new BufferedOutputStream(out)) {
+        FileReadWrite file_rw = new FileReadWrite("text.txt");
+        file_rw.write("Ciao sono Federico");
+        file_rw.read();
 
-            int c;
-            long start = System.nanoTime();
-            while ((c = buf_in.read()) != -1) {
-                buf_out.write(c);
-            }
-            long end = System.nanoTime();
+        BufferedReadWrite buffered_rw = new BufferedReadWrite("text.txt");
+        buffered_rw.write("Ciao sono Lucia");
+        buffered_rw.read();
 
-            System.out.println(end - start);
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found");
-        } finally {
-            in.close();
-            out.close();
-        }
+        DataReadWrite data_rw = new DataReadWrite("text.txt");
+        int l = data_rw.write("Ciao sono Ernesto");
+        data_rw.read(l);
     }
 }

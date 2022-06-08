@@ -1,5 +1,0 @@
-Name: Federico
-Surname: Bustaffa
-Age: 22
-Height: 177 cm
-Weight: 60 kg
