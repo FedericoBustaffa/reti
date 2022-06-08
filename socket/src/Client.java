@@ -3,34 +3,32 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.ConnectException;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class Client {
 
 	private String name;
-	private Socket client;
-	private int port;
-	private BufferedWriter out;
+	private Socket socket;
+	private BufferedWriter writer;
 
 	public Client(String name) throws NullPointerException {
 		this.name = name;
+		socket = new Socket();
+	}
 
-		boolean bounded = false;
-		int p = 1;
-		while (!bounded && p < 5000) {
-			try {
-				client = new Socket(InetAddress.getLocalHost(), p);
-				port = p;
+	public void connect() {
+		try {
+			socket.connect(new InetSocketAddress(InetAddress.getLocalHost(), 1500));
+			writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
-				bounded = true;
-				out = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
-				out.write(name + "\n");
-				out.flush();
-			} catch (ConnectException e) {
-				p++;
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			writer.write(name + "\n");
+			writer.flush();
+		} catch (ConnectException e) {
+		} catch (SocketException e) {
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -38,14 +36,10 @@ public class Client {
 		return name;
 	}
 
-	public int getPort() {
-		return port;
-	}
-
 	public void write(String msg) {
 		try {
-			out.write(msg + "\n");
-			out.flush();
+			writer.write(msg + "\n");
+			writer.flush();
 		} catch (IOException e) {
 			System.out.println("Writing error");
 		}
@@ -53,8 +47,8 @@ public class Client {
 
 	public void close() {
 		try {
-			out.close();
-			client.close();
+			writer.close();
+			socket.close();
 		} catch (IOException e) {
 			System.out.println("Error on close");
 		}

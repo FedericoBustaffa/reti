@@ -5,9 +5,10 @@ public class ServerMain {
 		Scanner in = new Scanner(System.in);
 		System.out.print("Server size: ");
 		Server server = new Server("Chat", in.nextInt());
-		System.out.println("Server on port " + server.getPort());
 
 		server.start();
+		System.out.println("Server on port 1500");
+		server.listen();
 		server.shutdown();
 
 		in.close();

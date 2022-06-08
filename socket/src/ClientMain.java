@@ -5,7 +5,8 @@ public class ClientMain {
         Scanner in = new Scanner(System.in);
         System.out.print("Client name: ");
         Client client = new Client(in.nextLine());
-        System.out.println("Service on port: " + client.getPort());
+        client.connect();
+        System.out.println("Service on port 1500");
 
         String msg;
         do {
