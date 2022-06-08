@@ -8,7 +8,6 @@ public class ClientMain {
         Scanner in = new Scanner(System.in);
         client.write(in.nextLine());
 
-        Thread.sleep(5000);
         in.close();
         client.close();
     }
