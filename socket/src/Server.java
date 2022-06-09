@@ -37,6 +37,7 @@ public class Server {
 	public void start() {
 		try {
 			server_socket.bind(new InetSocketAddress(InetAddress.getLocalHost(), 1500));
+			System.out.println(server_socket.getInetAddress().getHostAddress());
 		} catch (BindException e) {
 		} catch (IOException e) {
 			System.out.println("IOException occurred");
