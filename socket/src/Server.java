@@ -4,22 +4,31 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.io.IOException;
 import java.net.BindException;
-import java.net.InetSocketAddress;
 
 public class Server {
 
 	private String name;
 	private int size;
 	private ServerSocket server_socket;
+	private int port;
 	private ExecutorService pool;
 
 	public Server(String name, int size) {
 		this.name = name;
 		this.size = size;
-		try {
-			server_socket = new ServerSocket();
-		} catch (IOException e) {
-			e.printStackTrace();
+		boolean bound = false;
+		int i = 1;
+		while (i < 5000 && !bound) {
+			try {
+				server_socket = new ServerSocket(i);
+				bound = true;
+				port = i;
+			} catch (BindException e) {
+				System.out.println("Porta " + i + " occupata");
+				i++;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 		this.pool = Executors.newCachedThreadPool();
@@ -33,14 +42,8 @@ public class Server {
 		return size;
 	}
 
-	public void start() {
-		try {
-			server_socket.bind(new InetSocketAddress(1500));
-		} catch (BindException e) {
-			System.out.println("Bind error");
-		} catch (IOException e) {
-			System.out.println("IOException occurred");
-		}
+	public int getPort() {
+		return port;
 	}
 
 	public void listen() {
@@ -62,14 +65,13 @@ public class Server {
 
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
-		System.out.print("Server size: ");
+		System.out.print("Numero massimo utenti: ");
 		Server server = new Server("Chat", in.nextInt());
+		in.close();
 
-		server.start();
-		System.out.println("Server on port 1500");
+		System.out.println("Server attivo sulla porta: " + server.getPort());
 		server.listen();
 		server.shutdown();
 
-		in.close();
 	}
 }

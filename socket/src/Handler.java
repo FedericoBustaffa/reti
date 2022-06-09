@@ -15,7 +15,7 @@ public class Handler implements Runnable {
 			socket = server_socket.accept();
 			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			client_name = reader.readLine();
-			System.out.println(client_name + " join the chat");
+			System.out.println(client_name + " si e' unito alla chat");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -25,15 +25,15 @@ public class Handler implements Runnable {
 		String msg;
 		try {
 			while ((msg = reader.readLine()) != null) {
-				if (!msg.equals("close"))
+				if (!msg.equals("FINE"))
 					System.out.printf("%s: %s\n", client_name, msg);
 			}
 			reader.close();
 			socket.close();
 		} catch (IOException e) {
-			System.out.println("Connection lost");
+			System.out.println("Connessione persa");
 		} finally {
-			System.out.println(client_name + " left the chat");
+			System.out.println(client_name + " ha abbandonato la chat");
 		}
 
 	}
