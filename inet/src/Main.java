@@ -9,8 +9,9 @@ public class Main {
     private static void caching() throws Exception {
         Security.setProperty("networkaddress.cache.ttl", "100000");
         long start = System.currentTimeMillis();
+        InetAddress add;
         for (int i = 0; i < 1000; i++) {
-            InetAddress add = InetAddress.getByName("www.google.com");
+            add = InetAddress.getByName("www.google.com");
             System.out.println(add.getHostAddress());
         }
         long end = System.currentTimeMillis();
