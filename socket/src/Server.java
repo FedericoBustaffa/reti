@@ -4,7 +4,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.io.IOException;
 import java.net.BindException;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 
 public class Server {
@@ -36,8 +35,7 @@ public class Server {
 
 	public void start() {
 		try {
-			server_socket.bind(new InetSocketAddress(InetAddress.getLocalHost(), 1500));
-			System.out.println(server_socket.getInetAddress().getHostAddress());
+			server_socket.bind(new InetSocketAddress(1500));
 		} catch (BindException e) {
 		} catch (IOException e) {
 			System.out.println("IOException occurred");
