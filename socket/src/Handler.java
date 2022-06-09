@@ -4,13 +4,13 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ClientHandler implements Runnable {
+public class Handler implements Runnable {
 
 	private String client_name;
 	private Socket socket;
 	private BufferedReader reader;
 
-	public ClientHandler(ServerSocket server_socket) {
+	public Handler(ServerSocket server_socket) {
 		try {
 			socket = server_socket.accept();
 			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));

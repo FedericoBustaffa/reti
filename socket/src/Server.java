@@ -1,4 +1,5 @@
 import java.net.ServerSocket;
+import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.io.IOException;
@@ -44,7 +45,7 @@ public class Server {
 
 	public void listen() {
 		for (int i = 0; i < size; i++) {
-			pool.execute(new ClientHandler(server_socket));
+			pool.execute(new Handler(server_socket));
 		}
 	}
 
@@ -57,5 +58,18 @@ public class Server {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static void main(String[] args) {
+		Scanner in = new Scanner(System.in);
+		System.out.print("Server size: ");
+		Server server = new Server("Chat", in.nextInt());
+
+		server.start();
+		System.out.println("Server on port 1500");
+		server.listen();
+		server.shutdown();
+
+		in.close();
 	}
 }
