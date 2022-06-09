@@ -11,6 +11,7 @@ public class Server {
 
 	private String name;
 	private int size;
+	private InetAddress ip;
 	private ServerSocket server_socket;
 	private ExecutorService pool;
 
@@ -18,6 +19,7 @@ public class Server {
 		this.name = name;
 		this.size = size;
 		try {
+			ip = InetAddress.getLocalHost();
 			server_socket = new ServerSocket();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -32,6 +34,10 @@ public class Server {
 
 	public int getSize() {
 		return size;
+	}
+
+	public String getIP() {
+		return ip.getHostAddress();
 	}
 
 	public void start() {
@@ -64,6 +70,8 @@ public class Server {
 		Scanner in = new Scanner(System.in);
 		System.out.print("Server size: ");
 		Server server = new Server("Chat", in.nextInt());
+
+		System.out.println("Server IP: " + server.getIP());
 
 		server.start();
 		System.out.println("Server on port 1500");
