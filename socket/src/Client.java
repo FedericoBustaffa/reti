@@ -17,7 +17,7 @@ public class Client {
 	public Client(String name) throws NullPointerException {
 		this.name = name;
 
-		int i = 1;
+		int i = 1023;
 		boolean bound = false;
 		while (i < 5000 && !bound) {
 			try {
