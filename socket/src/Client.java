@@ -20,7 +20,7 @@ public class Client {
 
 	public void connect() {
 		try {
-			socket.connect(new InetSocketAddress(InetAddress.getByName("192.162.1.21"), 1500));
+			socket.connect(new InetSocketAddress(InetAddress.getLocalHost(), 1500));
 			writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
 			writer.write(name + "\n");
