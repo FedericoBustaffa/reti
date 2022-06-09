@@ -20,7 +20,7 @@ public class Client {
 
 	public void connect() {
 		try {
-			InetAddress add = InetAddress.getByName("scheggia");
+			InetAddress add = InetAddress.getByName("192.168.1.21");
 			System.out.println(add.getHostAddress());
 			socket.connect(new InetSocketAddress(add, 1500));
 			writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
