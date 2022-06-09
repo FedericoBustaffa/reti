@@ -21,7 +21,9 @@ public class Main {
 
     private static void network_interfaces() throws Exception {
         NetworkInterface net_int = NetworkInterface.getByInetAddress(InetAddress.getLocalHost());
-        System.out.println("LocalHost Network Interface: " + net_int.getName());
+        if (net_int != null) {
+            System.out.println("LocalHost Network Interface: " + net_int.getName());
+        }
 
         Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
         for (NetworkInterface ni : Collections.list(nets)) {
@@ -38,5 +40,6 @@ public class Main {
     public static void main(String[] args) throws Exception {
         caching();
         network_interfaces();
+        System.out.println(InetAddress.getLocalHost().getHostAddress());
     }
 }
