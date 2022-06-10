@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-public class Main {
+public class Mapper {
     public static void main(String[] args) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
@@ -15,11 +15,11 @@ public class Main {
         Persona p = new Persona("Mario", "Rossi");
 
         try {
-            File jfile = new File("json_file/persone.json");
-            mapper.writeValue(jfile, p);
+            File file = new File("json_files/file.json");
+            mapper.writeValue(file, p);
             System.out.println(mapper.writeValueAsString(p));
 
-            Persona p2 = mapper.readValue(jfile, Persona.class);
+            Persona p2 = mapper.readValue(file, Persona.class);
             System.out.printf("Nome: %s\nCognome: %s\n", p2.nome(), p2.cognome());
         } catch (IOException e) {
             e.printStackTrace();
