@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.SocketException;
 
 public class Receiver {
@@ -36,16 +37,20 @@ public class Receiver {
 		return buffer_size;
 	}
 
-	public void receive() {
-		try {
-			socket.receive(packet);
-		} catch (IOException e) {
-			System.out.println("Errore ricezione messaggio");
-		}
+	public void receive() throws IOException {
+		socket.receive(packet);
 	}
 
 	public String get() throws UnsupportedEncodingException {
 		return new String(packet.getData(), 0, packet.getLength(), "UTF-8");
+	}
+
+	public InetAddress getSenderAddress() {
+		return packet.getAddress();
+	}
+
+	public int getSenderPort() {
+		return packet.getPort();
 	}
 
 	public void close() {
@@ -63,17 +68,23 @@ public class Receiver {
 			return;
 		}
 
-		String msg;
-		do {
+		try {
 			receiver.receive();
-			msg = receiver.get();
-			if (msg.equals("FINE")) {
-				System.out.println("Client disconnesso");
-			} else {
-				System.out.println("Messaggio ricevuto: " + msg);
-			}
-		} while (!msg.equals("FINE"));
-
+			String msg = receiver.get();
+			System.out.printf("%s si e' connesso\nIP: %s\nPorta: %d\n", msg,
+					receiver.getSenderAddress().getHostAddress(), receiver.getPort());
+			do {
+				receiver.receive();
+				msg = receiver.get();
+				if (msg.equals("FINE")) {
+					System.out.println("Client disconnesso");
+				} else {
+					System.out.println("Messaggio ricevuto: " + msg);
+				}
+			} while (!msg.equals("FINE"));
+		} catch (IOException e) {
+			System.out.println("Tempo scaduto");
+		}
 		receiver.close();
 	}
 }
