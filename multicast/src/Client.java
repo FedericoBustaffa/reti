@@ -22,10 +22,10 @@ public class Client {
                 }
             }
 
-            MulticastSocket ms = new MulticastSocket(port);
-            SocketAddress group = new InetSocketAddress("239.255.1.3", port);
-            ms.joinGroup(group, NetworkInterface.getByName("lo"));
-            ms.close();
+            NetworkInterface ni = NetworkInterface.getByName("net2");
+            System.out.println(ni.getDisplayName());
+            ni.getInetAddresses();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
