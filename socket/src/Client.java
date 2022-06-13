@@ -61,7 +61,7 @@ public class Client {
 			writer.close();
 			socket.close();
 		} catch (IOException e) {
-			System.out.println("ErrorE in chiusura");
+			System.out.println("Errore in chiusura");
 		}
 	}
 
