@@ -21,7 +21,6 @@ public class Client extends RemoteObject implements Stub {
         } catch (NotBoundException e) {
             e.printStackTrace();
         }
-
     }
 
     public String getName() throws RemoteException {
