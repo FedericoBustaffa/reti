@@ -18,6 +18,10 @@ public class Server extends RemoteServer implements Service {
 		registry = LocateRegistry.getRegistry(port);
 	}
 
+	public String getName() throws RemoteException {
+		return name;
+	}
+
 	public void run() {
 		try {
 			registry.rebind(name, this.service);
@@ -26,7 +30,7 @@ public class Server extends RemoteServer implements Service {
 		}
 	}
 
-	public void message(Stub client, String msg) {
+	public void message(Stub client, String msg) throws RemoteException {
 		for (Stub c : clients) {
 			try {
 				if (!c.equals(client))
@@ -74,8 +78,9 @@ public class Server extends RemoteServer implements Service {
 	}
 
 	public static void main(String[] args) {
+
 		try {
-			Server server = new Server(2000, "SERVICE");
+			Server server = new Server(2000, "CHAT");
 			server.run();
 		} catch (RemoteException e) {
 			System.out.println("Errore di comunicazione " + e.toString());
