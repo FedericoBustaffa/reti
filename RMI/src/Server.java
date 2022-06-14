@@ -1,16 +1,18 @@
 import java.rmi.*;
 import java.rmi.registry.*;
 import java.rmi.server.*;
-import java.util.Date;
+import java.util.Vector;
 
 public class Server extends RemoteServer implements Service {
 
 	private Service service;
 	private Registry registry;
 	private String name;
+	private Vector<Stub> clients;
 
 	public Server(int port, String name) throws RemoteException {
 		this.name = name;
+		this.clients = new Vector<Stub>();
 		service = (Service) UnicastRemoteObject.exportObject(this, 0);
 		LocateRegistry.createRegistry(port);
 		registry = LocateRegistry.getRegistry(port);
@@ -24,25 +26,51 @@ public class Server extends RemoteServer implements Service {
 		}
 	}
 
-	public void shutdown() {
-		try {
-			UnicastRemoteObject.unexportObject(this, true);
-			registry.unbind(name);
-		} catch (RemoteException | NotBoundException e) {
-			e.printStackTrace();
+	public void message(Stub client, String msg) {
+		for (Stub c : clients) {
+			try {
+				if (!c.equals(client))
+					c.sendNotify(client.getName() + ": " + msg);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
-	public String hello() {
-		return "HELLO";
+	public synchronized void registerForCallback(Stub client) throws RemoteException {
+		for (Stub c : clients) {
+			c.sendNotify(client.getName() + " si e' connesso");
+		}
+
+		if (!clients.contains(client)) {
+			clients.add(client);
+			System.out.println(client.getName() + " si e' connesso");
+		}
 	}
 
-	public String echo(String s) {
-		return "echo: " + s;
+	public synchronized void unregisterForCallback(Stub client) throws RemoteException {
+		for (Stub c : clients) {
+			if (!c.equals(client))
+				c.sendNotify(client.getName() + " si e' disconnesso");
+		}
+
+		if (clients.remove(client)) {
+			System.out.println(client.getName() + " si e' disconnesso");
+		}
 	}
 
-	public String date() {
-		return new Date().toString();
+	public void disconnectClient(Stub client) {
+		try {
+			clients.remove(client);
+			if (clients.isEmpty()) {
+				registry.unbind(name);
+				UnicastRemoteObject.unexportObject(this, true);
+			}
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		} catch (NotBoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void main(String[] args) {
@@ -53,4 +81,5 @@ public class Server extends RemoteServer implements Service {
 			System.out.println("Errore di comunicazione " + e.toString());
 		}
 	}
+
 }

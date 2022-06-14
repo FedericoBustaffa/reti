@@ -3,12 +3,12 @@ import java.rmi.RemoteException;
 
 public interface Service extends Remote {
 
-	public String hello() throws RemoteException;
+	public void message(Stub client, String s) throws RemoteException;
 
-	public String echo(String s) throws RemoteException;
+	public void registerForCallback(Stub client) throws RemoteException;
 
-	public String date() throws RemoteException;
+	public void unregisterForCallback(Stub client) throws RemoteException;
 
-	public void shutdown() throws RemoteException;
+	public void disconnectClient(Stub client) throws RemoteException;
 
 }
