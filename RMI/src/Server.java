@@ -5,7 +5,6 @@ import java.util.Vector;
 
 public class Server extends RemoteServer implements Service {
 
-	private Service service;
 	private Registry registry;
 	private String name;
 	private Vector<Stub> clients;
@@ -13,7 +12,7 @@ public class Server extends RemoteServer implements Service {
 	public Server(int port, String name) throws RemoteException {
 		this.name = name;
 		this.clients = new Vector<Stub>();
-		service = (Service) UnicastRemoteObject.exportObject(this, 0);
+		UnicastRemoteObject.exportObject(this, 0);
 		LocateRegistry.createRegistry(port);
 		registry = LocateRegistry.getRegistry(port);
 	}
@@ -24,7 +23,7 @@ public class Server extends RemoteServer implements Service {
 
 	public void run() {
 		try {
-			registry.rebind(name, this.service);
+			registry.rebind(name, this);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
